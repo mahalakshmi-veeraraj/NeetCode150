@@ -1,6 +1,7 @@
 Topic Wise NeetCode 150 Problems.
 
 Topic - Arrays & Hashing.
+
 1. Contains Duplicate.
 2. Valid Anagram.
 3. Two Sum.
@@ -27,5 +28,15 @@ Topic - Sliding Window.
 18. Permutation In String.
 19. Minimum Window Substring.
 20. Sliding Window Maximum.
+
+Topic - Stack.
+
+21. Valid Parentheses.
+22. Min Stack.
+23. Evaluate Reverse Polish Notation.
+24. Generate Parentheses.
+25. Daily Temperatures.
+26. Car Fleet.
+27. Largest Rectangle In Histogram.
     
 
