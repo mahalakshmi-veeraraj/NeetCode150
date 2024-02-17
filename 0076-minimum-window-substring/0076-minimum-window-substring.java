@@ -1,10 +1,6 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if (s.equals(t)) return s;
-        if (s.length() <= 1) {
-            if (t.equals(s)) return s;
-            else return "";
-        }
+        
         
         Map<Character, Integer> freqMap_t = new HashMap<>();
         for (int i = 0; i < t.length(); i++) {
