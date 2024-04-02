@@ -1,28 +1,25 @@
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        int n = nums.length;
-        int totalWindows =  n - k;
-        int[] answerArray = new int[totalWindows + 1];
+        Deque<Integer> doublyEndedQueue = new ArrayDeque<>();
+        int totalWindow = nums.length - k;
+        int[] answerArray = new int[totalWindow + 1];
         int answerArrayIndex = 0;
-        Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < k; i++) {
-            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
-                deque.pollLast();
+            while (!doublyEndedQueue.isEmpty() && nums[doublyEndedQueue.peekLast()] <= nums[i]) {
+                doublyEndedQueue.pollLast();
             }
-            deque.addLast(i);
+            doublyEndedQueue.addLast(i);
         }
-        answerArray[answerArrayIndex++] = nums[deque.peekFirst()];
-        int inElement = 0;
-        for (int i = 1; i <= totalWindows; i++) {
-            if (deque.peekFirst() == i - 1) {
-                deque.pollFirst();
+        answerArray[answerArrayIndex++] = nums[doublyEndedQueue.peekFirst()];
+        for (int i = 1; i <= totalWindow; i++) {
+            if(doublyEndedQueue.peekFirst() == i - 1) {
+                doublyEndedQueue.pollFirst();
+            }  
+            while (!doublyEndedQueue.isEmpty() && nums[doublyEndedQueue.peekLast()] <= nums[i + k - 1]) {
+                doublyEndedQueue.pollLast();
             }
-            inElement = nums[k + i - 1];
-            while (!deque.isEmpty() && nums[deque.peekLast()] < inElement) {
-                deque.pollLast();
-            }
-            deque.addLast(k + i - 1);
-            answerArray[answerArrayIndex++] = nums[deque.peekFirst()];
+            doublyEndedQueue.addLast(i + k - 1);
+            answerArray[answerArrayIndex++] = nums[doublyEndedQueue.peekFirst()];
         }
         return answerArray;
     }
