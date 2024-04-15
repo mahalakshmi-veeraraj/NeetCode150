@@ -8,7 +8,6 @@ class Solution {
         }
     }
     public int carFleet(int target, int[] position, int[] speed) {
-        int answer = 0;
         int n = position.length;
         Car[] cars = new Car[n];
         for (int i = 0; i < n; i++) {
@@ -16,39 +15,13 @@ class Solution {
             cars[i] = car;
         }
         Arrays.sort(cars, ((car1, car2) -> car2.position - car1.position));
-        double previousTime = 0;
-        double currentTime = 0;
-        for (int i = 0; i < n; i++) {
-            currentTime = cars[i].time;
-            System.out.println("Current Time is "+currentTime+" "+previousTime);
-            if (currentTime > previousTime) {
-                answer++;
+        Stack<Double> stack = new Stack<>();
+        stack.add(cars[0].time);
+        for (int i = 1; i < n; i++) {
+            if (stack.peek() < cars[i].time) {
+                stack.push(cars[i].time);
             }
-            previousTime = Math.max(previousTime, currentTime);
         }
-        return answer;
+        return stack.size();
     }
 }
-
-
-
-// target = 12
-    
-// Position    10 8 0  5 3
-// Speed       2  4 1  1 3
-// Time        1  1 12 7 3
-    
-
-// target = 100
-// Position    0,2,4
-// Speed       4,2,1
-
-// After sorting the position  4,   2,  0
-//                   Speed     1,   2,  4
-//                   Time      96,  49, 25
-
-// target = 10
-// Position                         6, 8
-// Speed                            3, 2
-// After sorting the position       8, 6
-// Time                             0, 2
