@@ -10,7 +10,6 @@ class Solution {
     public int carFleet(int target, int[] position, int[] speed) {
         int answer = 0;
         int n = position.length;
-        if (n <= 1) return n;
         Car[] cars = new Car[n];
         for (int i = 0; i < n; i++) {
             Car car = new Car(position[i], (double) (target - position[i]) / speed[i]);
