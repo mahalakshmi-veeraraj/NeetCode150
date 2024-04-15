@@ -20,8 +20,9 @@ class Solution {
         double currentTime = 0;
         for (int i = 0; i < n; i++) {
             currentTime = cars[i].time;
+            System.out.println("Current Time is "+currentTime+" "+previousTime);
             if (currentTime > previousTime) {
-                ++answer;
+                answer++;
             }
             previousTime = Math.max(previousTime, currentTime);
         }
