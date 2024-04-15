@@ -1,42 +1,39 @@
 class Solution {
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
-        int[] next_Smaller_Element_On_Left = new int[n];
-        int[] next_Smaller_Element_On_Right = new int[n];
+        int[] leftNS = new int[n]; // leftNS - Left nearest smaller.
+        int[] rightNS = new int[n]; // rightNS - Right nearest smaller.
         Stack<Integer> stack = new Stack<>();
-        for (int i = n - 1; i >= 0; i--) {
-            while(!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        for (int i = 0; i < n; i++) {
+            while (!stack.empty() && heights[stack.peek()] >= heights[i]) {
                 stack.pop();
             }
-            next_Smaller_Element_On_Right[i] = stack.isEmpty() ? -1 : stack.peek();
+            
+            leftNS[i] = stack.empty() ? -1 : stack.peek();
             stack.push(i);
         }
         stack = new Stack<>();
-        for (int i = 0; i < n; i++) {
-            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.empty() && heights[stack.peek()] > heights[i]) {
                 stack.pop();
-            }
-            next_Smaller_Element_On_Left[i] = stack.isEmpty() ? -1 : stack.peek();
+            }    
+        
+            rightNS[i] = stack.empty() ? -1 : stack.peek();
             stack.push(i);
         }
-        
-        int area = 0;
         int width = 0;
         int height = 0;
-        int maxArea = 0;
-        int greaterElementOnLeft = 0;
-        int greaterElementOnRight = 0;
-        
+        int area = 0;
+        int maxArea = Integer.MIN_VALUE;
+        int leftNSEI = -1; // leftNSEI - Left nearest smaller element index.
+        int rightNSEI = -1; // rightNSEI - Right nearest smaller element index.
         for (int i = 0; i < n; i++) {
+            leftNSEI = leftNS[i] == -1 ? 0 : leftNS[i] + 1;
+            rightNSEI = rightNS[i] == -1 ? n - 1 : rightNS[i] - 1;
             height = heights[i];
-            
-            greaterElementOnLeft = next_Smaller_Element_On_Left[i] == -1 ? 0 : next_Smaller_Element_On_Left[i] + 1;
-            greaterElementOnRight = next_Smaller_Element_On_Right[i] == -1 ? n - 1 : next_Smaller_Element_On_Right[i] - 1;
-            
-            width = greaterElementOnRight - greaterElementOnLeft + 1;
-            
+            width = rightNSEI - leftNSEI + 1;
             area = width * height;
-            maxArea = Math.max(area, maxArea);
+            maxArea = Math.max(maxArea, area);
         }
         return maxArea;
     }
