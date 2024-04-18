@@ -1,39 +1,39 @@
 class Solution {
     public int search(int[] nums, int target) {
-        int n = nums.length;
-        int minElementIndex = minElementIndex(nums);
-        int answer = binarySearch(nums, target, 0, minElementIndex - 1);
-        if (answer != -1) return answer;
-        return binarySearch(nums, target, minElementIndex, n - 1);
+        int minElementIndex = findMin(nums);
+        int answer = binarySearch(nums, 0, minElementIndex - 1, target);
+        if (answer != -1) {
+            return answer;
+        }
+        return binarySearch(nums, minElementIndex, nums.length - 1, target);
     }
-    private int minElementIndex (int[] nums) {
-        int n = nums.length;
-        int left = 0;
-        int right = n - 1;
-        int mid = 0;
-        while (left < right) {
-            mid = (left + right) / 2;
-            if (nums[left] > nums[right]) {
-                left++;
+    private int findMin(int[] nums) {
+        int low = 0;
+        int high = nums.length - 1;
+        int middle = 0;
+        while (low < high) {
+            middle = (low + high) / 2;
+            if (nums[middle] <= nums[high]) {
+                high = middle;
             }
             else {
-                right--;
+                low = middle + 1;
             }
         }
-        return left;
+        return low;
     }
-    private int binarySearch (int[] nums, int target, int left, int right) {
-        int mid = 0;
-        while (left <= right) {
-            mid = (left + right) / 2;
-            if (nums[mid] == target) {
-                return mid;
+    private int binarySearch(int[] nums, int low, int high, int target) {
+        int middle = 0;
+        while (low <= high) {
+            middle = (low + high) / 2;
+            if (nums[middle] == target) {
+                return middle;
             }
-            else if (nums[mid] < target) {
-                left++;
+            else if (nums[middle] < target) {
+                low = middle + 1;
             }
             else {
-                right--;
+                high = middle - 1;
             }
         }
         return -1;
