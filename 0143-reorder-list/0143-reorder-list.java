@@ -28,12 +28,10 @@ class Solution {
             fast = fast.next.next;
         }
         ListNode middle = totalNode % 2 != 0 ? slow : slow.next;
-        ListNode temp = middle.next;
-        middle.next = null;
         
         // Reversing the second part of the given linked list.
-        ListNode secondPart = reverseLinkedList(temp);
-        
+        ListNode secondPart = reverseLinkedList(middle.next);
+        middle.next = null;
         
         // Merging the firstPart and secondPart of the linked list.
         head = mergeNodes(firstPart, secondPart);
