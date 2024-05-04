@@ -30,8 +30,7 @@ class Solution {
             if (totalNode == removeNodeIndex - 1) {
                 removeNodePrevious = current;
                 removeNode = current.next;
-                // if (removeNode != null)
-                    removeNodeNext = removeNode.next;
+                removeNodeNext = removeNode.next;
                 break;
             }
             current = current.next;
