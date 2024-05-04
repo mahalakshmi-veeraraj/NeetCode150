@@ -18,7 +18,6 @@ class Solution {
         }
         
         int removeNodeIndex = n >= totalNode ? n % totalNode : totalNode - n;
-        
         if (removeNodeIndex == 0) return head.next;
         
         totalNode = 0;
@@ -31,15 +30,14 @@ class Solution {
             if (totalNode == removeNodeIndex - 1) {
                 removeNodePrevious = current;
                 removeNode = current.next;
-                if (removeNode != null)
+                // if (removeNode != null)
                     removeNodeNext = removeNode.next;
                 break;
             }
             current = current.next;
             totalNode++;
         }
-        if (removeNodePrevious != null)
-            removeNodePrevious.next = removeNodeNext;
+        removeNodePrevious.next = removeNodeNext;
         return head;
     }
 }
