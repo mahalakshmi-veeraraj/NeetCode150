@@ -10,35 +10,17 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // Calculating the total node in the given linked list.
-        int totalNode = 0;
-        ListNode current = head;
-        while (current != null) {
-            current = current.next;
-            totalNode++;
+        ListNode pointer1 = head;
+        ListNode pointer2 = head;
+        for (int i = 0; i < n; i++) {
+            pointer2 = pointer2.next;
         }
-        
-        // Finding the remove node index value in the given linked list;
-        int removeNodeIndex = n >= totalNode ? n % totalNode : totalNode - n;
-        if (removeNodeIndex == 0) return head.next;
-        
-        totalNode = 0;
-        current = head;
-        ListNode removeNodePrevious = null;
-        ListNode removeNode = null;
-        ListNode removeNodeNext = null;
-        
-        while (current != null) {
-            if (totalNode == removeNodeIndex - 1) {
-                removeNodePrevious = current;
-                removeNode = current.next;
-                removeNodeNext = removeNode.next;
-                break;
-            }
-            current = current.next;
-            totalNode++;
+        if (pointer2 == null) return pointer1.next;
+        while (pointer2.next != null) {
+            pointer1 = pointer1.next;
+            pointer2 = pointer2.next;
         }
-        removeNodePrevious.next = removeNodeNext;
+        pointer1.next = pointer1.next.next;
         return head;
     }
 }
