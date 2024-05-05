@@ -34,7 +34,7 @@ class LRUCache {
         Node node = hashMap.get(key);
         int value = node.value;
         deleteNode(node);
-        hashMap.remove(node.key);
+        //hashMap.remove(node.key);
         addNode(node);
         hashMap.put(key, tail.previous);
         return value;
@@ -44,7 +44,7 @@ class LRUCache {
         if (hashMap.containsKey(key)) {
             Node node = hashMap.get(key);
             deleteNode(node);
-            hashMap.remove(key);
+            //hashMap.remove(key);
             node.value = value;
             addNode(node);
             hashMap.put(key, tail.previous);
