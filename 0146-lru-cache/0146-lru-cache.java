@@ -4,25 +4,20 @@ class LRUCache {
         Node previous;
         int key;
         int value;
-        
         public Node(int key, int value) {
             this.key = key;
             this.value = value;
-            this.next = null;
-            this.previous = null;
         }
     }
     
-    Map<Integer, Node> hashMap;
-    int currentCapacity;
-    int actualCapacity;
+    Map<Integer, Node> hashMap = new HashMap<>();
     Node head = new Node(-1, -1);
     Node tail = new Node(-1, -1);
+    int actualCapacity;
+    int currentCapacity = 0;
     
     public LRUCache(int capacity) {
-        hashMap = new HashMap<>();
-        currentCapacity = 0;
-        actualCapacity = capacity;
+        this.actualCapacity = capacity;
         head.next = tail;
         tail.previous = head;
     }
@@ -30,11 +25,10 @@ class LRUCache {
     public int get(int key) {
         if (!hashMap.containsKey(key)) {
             return -1;
-        }    
+        }
         Node node = hashMap.get(key);
         int value = node.value;
         deleteNode(node);
-        //hashMap.remove(node.key);
         addNode(node);
         hashMap.put(key, tail.previous);
         return value;
@@ -44,14 +38,13 @@ class LRUCache {
         if (hashMap.containsKey(key)) {
             Node node = hashMap.get(key);
             deleteNode(node);
-            //hashMap.remove(key);
             node.value = value;
             addNode(node);
             hashMap.put(key, tail.previous);
         }
         else if (currentCapacity < actualCapacity) {
-            Node node = new Node(key, value);
-            addNode(node);
+            Node addNode = new Node(key, value);
+            addNode(addNode);
             hashMap.put(key, tail.previous);
             currentCapacity++;
         }
@@ -69,8 +62,8 @@ class LRUCache {
         Node tailPrevious = tail.previous;
         tail.previous = addNode;
         addNode.next = tail;
-        addNode.previous = tailPrevious;
         tailPrevious.next = addNode;
+        addNode.previous = tailPrevious;
     }
     
     private void deleteNode(Node deleteNode) {
