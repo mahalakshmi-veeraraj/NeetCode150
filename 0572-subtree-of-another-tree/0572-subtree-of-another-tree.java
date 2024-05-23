@@ -15,21 +15,23 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        String fullTree = preOrderTraversal(root);
-        String subTree = preOrderTraversal(subRoot);
+        StringBuilder rootStrBuilder =  new StringBuilder();
+        StringBuilder subRootStrBuilder = new StringBuilder();
         
-        return fullTree.contains(subTree);
+        preOrderTraversal(root, rootStrBuilder);
+        preOrderTraversal(subRoot, subRootStrBuilder);
+        System.out.println(rootStrBuilder.toString());
+        System.out.println(subRootStrBuilder.toString());
+        return rootStrBuilder.toString().indexOf(subRootStrBuilder.toString()) != -1;
     }
-    private String preOrderTraversal (TreeNode root) {
+    private void preOrderTraversal(TreeNode root, StringBuilder strBuilder) {
         if (root == null) {
-            return "null";
+            strBuilder.append("null");
+            return;
         }
-        
-        StringBuilder sb = new StringBuilder("^");
-        sb.append(root.val);
-        sb.append(preOrderTraversal(root.left));
-        sb.append(preOrderTraversal(root.right));
-        
-        return sb.toString();
+        strBuilder.append("R");
+        strBuilder.append(root.val);
+        preOrderTraversal(root.left, strBuilder);
+        preOrderTraversal(root.right, strBuilder);
     }
 }
