@@ -14,26 +14,27 @@
  * }
  */
 class Solution {
-    int count = 0;
+    class MutableInteger {
+        int value;
+        public MutableInteger(int value) {
+            this.value = value;
+        }
+    }
     public int kthSmallest(TreeNode root, int k) {
         
-        return find(root, k).val;
+        return find(root, k, new MutableInteger(0)).val;
     }
-    private TreeNode find (TreeNode root, int k) {
+    private TreeNode find (TreeNode root, int k, MutableInteger count) {
         if (root == null) return null;
         
-        TreeNode leftSubTree = find (root.left, k);
+        TreeNode leftSubTree = find (root.left, k, count);
         if (leftSubTree != null) {
             return leftSubTree;
         }
-        count++;
-        if (count == k) {
+        count.value += 1;
+        if (count.value == k) {
             return root;
         }
-        TreeNode rightSubTree = find(root.right, k);
-        if (rightSubTree != null) {
-            return rightSubTree;
-        }
-        return null;
+        return find(root.right, k, count);
     }
 }
