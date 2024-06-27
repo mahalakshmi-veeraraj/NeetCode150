@@ -14,16 +14,26 @@
  * }
  */
 class Solution {
+    int count = 0;
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> listInOrderTraversal = new ArrayList<>();
-        inOrderTraversal(listInOrderTraversal, root);
-        return listInOrderTraversal.get(k - 1);
+        
+        return find(root, k).val;
     }
-    private void inOrderTraversal (List<Integer> listInOrderTraversal, TreeNode root) {
-        if (root == null) return;
-        inOrderTraversal(listInOrderTraversal, root.left);
-        listInOrderTraversal.add(root.val);
-        inOrderTraversal(listInOrderTraversal, root.right);
+    private TreeNode find (TreeNode root, int k) {
+        if (root == null) return null;
+        
+        TreeNode leftSubTree = find (root.left, k);
+        if (leftSubTree != null) {
+            return leftSubTree;
+        }
+        count++;
+        if (count == k) {
+            return root;
+        }
+        TreeNode rightSubTree = find(root.right, k);
+        if (rightSubTree != null) {
+            return rightSubTree;
+        }
+        return null;
     }
-    
 }
