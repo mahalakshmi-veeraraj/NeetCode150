@@ -13,29 +13,27 @@
  *     }
  * }
  */
-
 class Solution {
     int totalGoodNodes = 1;
     public int goodNodes(TreeNode root) {
-        List<Integer> listSubAnswer = new ArrayList<>();
-        find(listSubAnswer, root);
+        find(root, new ArrayList<>());
         return totalGoodNodes;
     }
-    private void find(List<Integer> listSubAnswer, TreeNode root) {
+    private void find (TreeNode root, List<Integer> listSubAnswer) {
         if (root == null) return;
-        if (listSubAnswer.size() > 0) {
-            boolean isIncrement = true;
-            for (Integer i : listSubAnswer) {
-                if (i > root.val) {
-                    isIncrement = false;
-                    break;
-                }
+        
+        boolean isIncrement = true; 
+        for (Integer node : listSubAnswer) {
+            if (node > root.val) {
+                isIncrement = false;
+                break;
             }
-            if (isIncrement) totalGoodNodes++;
         }
+        if (isIncrement && listSubAnswer.size() > 0) totalGoodNodes++;
+        
         listSubAnswer.add(root.val);
-        find(listSubAnswer, root.left);
-        find(listSubAnswer, root.right);
+        find(root.left, listSubAnswer);
+        find(root.right, listSubAnswer);
         listSubAnswer.remove(listSubAnswer.size() - 1);
     }
 }
