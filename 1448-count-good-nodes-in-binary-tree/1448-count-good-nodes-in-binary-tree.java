@@ -14,26 +14,18 @@
  * }
  */
 class Solution {
-    int totalGoodNodes = 1;
+    int totalGoodNodes = 0;
     public int goodNodes(TreeNode root) {
-        find(root, new ArrayList<>());
+        find(root, Integer.MIN_VALUE);
         return totalGoodNodes;
     }
-    private void find (TreeNode root, List<Integer> listSubAnswer) {
+    private void find (TreeNode root, int maxSoFar) {
         if (root == null) return;
         
-        boolean isIncrement = true; 
-        for (Integer node : listSubAnswer) {
-            if (node > root.val) {
-                isIncrement = false;
-                break;
-            }
-        }
-        if (isIncrement && listSubAnswer.size() > 0) totalGoodNodes++;
+        if (maxSoFar <= root.val) totalGoodNodes++;
         
-        listSubAnswer.add(root.val);
-        find(root.left, listSubAnswer);
-        find(root.right, listSubAnswer);
-        listSubAnswer.remove(listSubAnswer.size() - 1);
+        maxSoFar = Math.max(maxSoFar, root.val);
+        find(root.left, maxSoFar);
+        find(root.right, maxSoFar);
     }
 }
