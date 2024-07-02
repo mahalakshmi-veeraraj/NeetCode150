@@ -1,11 +1,17 @@
 import java.time.*;
 class Twitter {
-    class Tweet {
+    class Tweet implements Comparable<Tweet> {
         int tweetId;
         LocalDateTime tweetDateTime;
         public Tweet(int tweetId, LocalDateTime tweetDateTime) {
             this.tweetId = tweetId;
             this.tweetDateTime = tweetDateTime;
+        }
+        @Override
+        public int compareTo(Tweet tweet) {
+            if (tweetDateTime.isAfter(tweet.tweetDateTime)) return -1;
+            else if (tweetDateTime.isBefore(tweet.tweetDateTime)) return 1;
+            else return 0;
         }
     }
     class User {
@@ -47,13 +53,7 @@ class Twitter {
                 listTweet.add(followerTweet);
             }
         }
-        Collections.sort(listTweet, (t1, t2) -> {
-            LocalDateTime t1TweetDateTime = t1.tweetDateTime;
-            LocalDateTime t2TweetDateTime = t2.tweetDateTime;
-            if (t1TweetDateTime.isAfter(t2TweetDateTime)) return -1;
-            else if (t1TweetDateTime.isBefore(t2TweetDateTime)) return 1;
-            else return 0;
-        });
+        Collections.sort(listTweet);
         List<Integer> listNewsFeed = new ArrayList<>();
         for (int i = 0; i < (listTweet.size() > 10 ? 10 : listTweet.size()); i++) 
             listNewsFeed.add(listTweet.get(i).tweetId);
