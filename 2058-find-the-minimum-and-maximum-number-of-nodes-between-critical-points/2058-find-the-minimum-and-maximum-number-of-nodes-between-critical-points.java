@@ -21,13 +21,9 @@ class Solution {
         while (current != null && current.next != null) {
             future = current.next;
             if (current.val < previous.val && current.val < future.val) {
-                System.out.println("local minima "+current.val);
                 listCriticalPoints.add(nodePosition);
-                System.out.println("critical point "+nodePosition);
             }
             else if (current.val > previous.val && current.val > future.val) {
-                System.out.println("local maxima "+current.val);
-                System.out.println("critical point "+nodePosition);
                 listCriticalPoints.add(nodePosition);
             }
             previous = current;
@@ -49,8 +45,3 @@ class Solution {
         return new int[]{minDistance, maxDistance};
     }
 }
-
-// [5,3,1,2,5,1,2]
-// 1 - local minima - node position 3
-// 5 - local maxima - node position 5
-// 1 - local minima - node position 6
