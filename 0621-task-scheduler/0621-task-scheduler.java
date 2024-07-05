@@ -1,10 +1,10 @@
 class Solution {
-    class Pair implements Comparable<Pair> {
+    class Pair implements Comparable<Pair>{
         int idleTime;
         int count;
-        public Pair(int count, int idleTime) {
-            this.count = count;
+        public Pair(int idleTime, int count) {
             this.idleTime = idleTime;
+            this.count = count;
         }
         @Override
         public int compareTo(Pair pair) {
@@ -12,27 +12,29 @@ class Solution {
         }
     }
     public int leastInterval(char[] tasks, int n) {
-        int[] freqArray = new int[26];
+        int[] frequencyArray = new int[26];
         for (int i = 0; i < tasks.length; i++) {
-            freqArray[tasks[i] - 'A']++;
+            frequencyArray[tasks[i] - 'A']++;
         }
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        for (int i = 0; i < freqArray.length; i++) {
-            if (freqArray[i] == 0) continue;
-            maxHeap.add(freqArray[i]);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(Collections.reverseOrder());
+        for (int i = 0; i < frequencyArray.length; i++) {
+            if (frequencyArray[i] != 0) {
+                maxHeap.add(frequencyArray[i]);
+            }
         }
-        int time = 0;
         Deque<Pair> deque = new ArrayDeque<>();
-        while (!maxHeap.isEmpty() || !deque.isEmpty()){
+        int time = 0;
+        while (!maxHeap.isEmpty() || !deque.isEmpty()) {
             time += 1;
             if (!maxHeap.isEmpty()) {
-                Integer peekVal = maxHeap.poll();
-                if (peekVal > 1)
-                    deque.addLast(new Pair(peekVal - 1, time + n));
+                Integer peekValue = maxHeap.poll();
+                if (peekValue > 1) {
+                    deque.addLast(new Pair(time + n, peekValue - 1));
+                }
             }
             if (!deque.isEmpty() && deque.peekFirst().idleTime == time) {
-                Pair peekFirstPair = deque.pollFirst();
-                maxHeap.add(peekFirstPair.count);
+                maxHeap.add(deque.peekFirst().count);
+                deque.pollFirst();
             }
         }
         return time;
