@@ -15,8 +15,7 @@ class Solution {
         listSubAnswer.add(nums[index]);
         find(listAnswer, nums, index + 1, listSubAnswer);
         
-        
-        
+        // logic to control excluding the already included element.
         int nextIndex = index;
         for (int i = index + 1; i < nums.length; i++) {
             if (nums[i] == nums[index]) {
