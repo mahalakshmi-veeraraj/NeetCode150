@@ -14,34 +14,49 @@
  * }
  */
 class Solution {
-    private String pathToStart = "";
-        private String pathToDest = "";
-        
+    String locToStart;
+    String locToEnd;
     public String getDirections(TreeNode root, int startValue, int destValue) {
-        dfs(lca(root, startValue, destValue), startValue, destValue, new StringBuilder());
-    return "U".repeat(pathToStart.length()) + pathToDest;        
+        // Step 1: Find the Lowest Common Ancestor (LCA).
+        TreeNode lca = lca(root, startValue, destValue);
+        
+        StringBuilder ansSB = new StringBuilder();
+        dfs(lca, startValue, destValue, ansSB);
+        
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < locToStart.length(); i++) {
+            // if (locToStart.charAt(i) == 'L')
+                sb.append("U");
+            // else sb.append(locToStart.charAt(i));
+        }
+        
+        return sb.toString() + locToEnd;
     }
-    private TreeNode lca(TreeNode root, int p, int q) {
-    if (root == null || root.val == p || root.val == q)
-      return root;
-    TreeNode left = lca(root.left, p, q);
-    TreeNode right = lca(root.right, p, q);
-    if (left != null && right != null)
-      return root;
-    return left == null ? right : left;
-  }
-
-  private void dfs(TreeNode root, int p, int q, StringBuilder path) {
-    if (root == null)
-      return;
-    if (root.val == p)
-      pathToStart = path.toString();
-    if (root.val == q)
-      pathToDest = path.toString();
-    dfs(root.left, p, q, path.append('L'));
-    path.deleteCharAt(path.length() - 1);
-    dfs(root.right, p, q, path.append('R'));
-    path.deleteCharAt(path.length() - 1);
-  }
-
+    
+    private TreeNode lca(TreeNode root, int startValue, int destValue) {
+        if (root == null) return root;
+        
+        else if (root.val == startValue || root.val == destValue) return root;
+        
+        TreeNode rootLeft = lca(root.left, startValue, destValue);
+        TreeNode rootRight = lca(root.right, startValue, destValue);
+        if (rootLeft != null && rootRight != null) return root;
+        else if (rootLeft != null && rootRight == null) return rootLeft;
+        else if (rootLeft == null && rootRight != null) return rootRight;
+        else return null;
+    }
+    
+    private void dfs(TreeNode node, int startValue, int destValue, StringBuilder sb) {
+        if (node == null) return;
+        if (node.val == startValue) locToStart = sb.toString();
+        if (node.val == destValue) locToEnd = sb.toString();
+        
+        sb.append("L");
+        dfs(node.left, startValue, destValue, sb);
+        sb.deleteCharAt(sb.length()-1);
+        
+        sb.append("R");
+        dfs(node.right, startValue, destValue, sb);
+        sb.deleteCharAt(sb.length()-1);
+    }
 }
