@@ -15,18 +15,30 @@
  */
 class Solution {
     public TreeNode searchBST(TreeNode root, int val) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        int queueSize = 0;
-        while (!queue.isEmpty()) {
-            queueSize = queue.size();
-            for (int i = 0; i < queueSize; i++) {
-                TreeNode peekNode = queue.poll();
-                if (peekNode.val == val) return peekNode;
-                if (peekNode.left != null) queue.add(peekNode.left);
-                if (peekNode.right != null) queue.add(peekNode.right);
-            }
+        // Brute Force Approach
+        // Queue<TreeNode> queue = new LinkedList<>();
+        // queue.add(root);
+        // int queueSize = 0;
+        // while (!queue.isEmpty()) {
+        //     queueSize = queue.size();
+        //     for (int i = 0; i < queueSize; i++) {
+        //         TreeNode peekNode = queue.poll();
+        //         if (peekNode.val == val) return peekNode;
+        //         if (peekNode.left != null) queue.add(peekNode.left);
+        //         if (peekNode.right != null) queue.add(peekNode.right);
+        //     }
+        // }
+        // return null;
+        return find(root, val);
+    }
+    private TreeNode find (TreeNode root, int val) {
+        if (root == null || root.val == val) return root;
+        
+        if (root.val < val) {
+            return find(root.right, val);
         }
-        return null;
+        else {
+            return find(root.left, val);
+        }
     }
 }
