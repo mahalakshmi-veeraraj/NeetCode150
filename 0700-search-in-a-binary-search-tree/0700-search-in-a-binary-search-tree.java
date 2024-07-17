@@ -29,6 +29,8 @@ class Solution {
         //     }
         // }
         // return null;
+        
+        // Optimized Approach.
         return find(root, val);
     }
     private TreeNode find (TreeNode root, int val) {
