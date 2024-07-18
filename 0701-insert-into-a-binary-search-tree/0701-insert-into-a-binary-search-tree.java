@@ -16,26 +16,12 @@
 class Solution {
     public TreeNode insertIntoBST(TreeNode root, int val) {
         if (root == null) return new TreeNode(val);
-        
-        insert(root, root, val);
-        return root;
-    }
-    private void insert (TreeNode root, TreeNode parent, int val) {
-        if (root == null || root.left == null && root.right == null) {
-            TreeNode newNode = new TreeNode(val);
-            TreeNode n = root == null ? parent : root;
-            if (n.val > val)
-                n.left = newNode;
-            else
-                n.right = newNode;
-            return;
-        }
-        
-        if (root.val > val) {
-            insert(root.left, root, val);
+        else if (root.val < val) {
+            root.right = insertIntoBST(root.right, val);
         }
         else {
-            insert(root.right, root, val);
+            root.left = insertIntoBST(root.left, val);
         }
+        return root;
     }
 }
