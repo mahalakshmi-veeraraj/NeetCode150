@@ -1,27 +1,39 @@
 class Solution {
-    class Car {
+    class Car implements Comparable<Car> {
+        int speed;
         int position;
-        double time;
-        public Car(int position, double time) {
+        public Car (int speed, int position) {
+            this.speed = speed;
             this.position = position;
-            this.time = time;
+        }
+        @Override
+        public int compareTo (Car car) {
+            
+            return this.position - car.position;
         }
     }
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
-        Car[] cars = new Car[n];
+        List<Car> listCar = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            Car car = new Car(position[i], (double) (target - position[i]) / speed[i]);
-            cars[i] = car;
+            listCar.add(new Car(speed[i], position[i]));
         }
-        Arrays.sort(cars, ((car1, car2) -> car2.position - car1.position));
-        Stack<Double> stack = new Stack<>();
-        stack.add(cars[0].time);
-        for (int i = 1; i < n; i++) {
-            if (stack.peek() < cars[i].time) {
-                stack.push(cars[i].time);
+        Collections.sort(listCar);
+        
+        int carFleet = position.length;
+        float[] time = new float[n];
+        for (int i = 0; i < n; i++) {
+            time[i] = ((float) target - listCar.get(i).position) / listCar.get(i).speed;
+        }
+        int i = n - 1;
+        while (i > 0) {
+            float t = time[i];
+            i--;
+            while (i >= 0 && time[i] <= t) {
+                carFleet--;
+                i--;
             }
         }
-        return stack.size();
+        return carFleet;
     }
 }
