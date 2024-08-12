@@ -1,19 +1,13 @@
 class MinStack {
-    Stack<Pair> stack = new Stack<>();
     class Pair {
-        private int minElement;
-        private int element;
-        public Pair (int minElement, int element) {
-            this.minElement = minElement;
+        int element;
+        int minElement;
+        public Pair (int element, int minElement) {
             this.element = element;
-        }
-        public int getMinElement() {
-            return this.minElement;
-        }
-        public int getElement() {
-            return this.element;
+            this.minElement = minElement;
         }
     }
+    Stack<Pair> stack = new Stack<>();
     public MinStack() {
         
     }
@@ -23,24 +17,24 @@ class MinStack {
             stack.push(new Pair(val, val));
         }
         else {
-            stack.push(new Pair(Math.min(val, getMin()), val));
+            stack.push(new Pair(val, Math.min(getMin(), val)));
         }
     }
     
     public void pop() {
-        if (stack.empty()) return;
-        
         stack.pop();
     }
     
     public int top() {
+        if (stack.empty()) return -1;
         
-        return stack.empty() ? -1 : stack.peek().getElement();
+        return stack.peek().element;
     }
     
     public int getMin() {
+        if (stack.empty()) return -1;
         
-        return stack.empty() ? -1 : stack.peek().getMinElement();
+        return stack.peek().minElement;
     }
 }
 
