@@ -24,10 +24,10 @@ class Solution {
             queueSize = queue.size();
             List<Integer> listSubAnswer = new ArrayList<>();
             for (int i = 0; i < queueSize; i++) {
-                TreeNode peekNode = queue.poll();
-                listSubAnswer.add(peekNode.val);
-                if (peekNode.left != null) queue.add(peekNode.left);
-                if (peekNode.right != null) queue.add(peekNode.right);
+                TreeNode peek = queue.poll();
+                listSubAnswer.add(peek.val);
+                if (peek.left != null) queue.add(peek.left);
+                if (peek.right != null) queue.add(peek.right);
             }
             listAnswer.add(listSubAnswer);
         }
