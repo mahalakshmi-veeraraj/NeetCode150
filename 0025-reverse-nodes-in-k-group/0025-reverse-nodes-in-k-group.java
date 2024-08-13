@@ -49,10 +49,4 @@ class Solution {
         }
         return null;
     }
-    private ListNode tailNode (ListNode node) {
-        while (node.next != null) {
-            node = node.next;
-        }
-        return node;
-    }
 }
