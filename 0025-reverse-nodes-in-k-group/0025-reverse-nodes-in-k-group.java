@@ -15,7 +15,6 @@ class Solution {
         ListNode current = head;
         while (current != null) {
             ListNode kthNode = findKthNode(current, k);
-            //System.out.println("kthNode value is "+kthNode.val);
             if (kthNode == null) {
                 answerNode.next = current;
                 break;
@@ -24,7 +23,7 @@ class Solution {
             kthNode.next = null;
             ListNode reversedKthNode = reverse(current);
             answerNode.next = reversedKthNode;
-            answerNode = tailNode(reversedKthNode);
+            answerNode = current;
             current = future;
         }
         return answerNodeHead.next;
