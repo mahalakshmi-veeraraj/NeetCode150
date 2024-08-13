@@ -15,21 +15,20 @@
  */
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        Map<Integer, Integer> inorderMap = new HashMap<>();
+        Map<Integer, Integer> inOrderMap = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
-            inorderMap.put(inorder[i], i);
+            inOrderMap.put(inorder[i], i);
         }
-        return construct(preorder, inorder, inorderMap, 0, preorder.length - 1, 0, inorder.length - 1);
+        return construct(preorder, inorder, inOrderMap, 0, preorder.length - 1, 0, inorder.length - 1);
     }
-    private TreeNode construct (int[] preorder, int[] inorder, Map<Integer, Integer> inorderMap, int sPre, int ePre, int sIn, int eIn) {
-        if (sPre > ePre || sIn > eIn) return null;
-        
-        int rootNode = preorder[sPre];
-        int rootNodeIndex = inorderMap.get(rootNode);
-        int leftSubtreeLength = rootNodeIndex - 1 - sIn + 1;
-        TreeNode root = new TreeNode(rootNode);
-        root.left = construct(preorder, inorder, inorderMap, sPre + 1, sPre + leftSubtreeLength, sIn, rootNodeIndex - 1);
-        root.right = construct(preorder, inorder, inorderMap, sPre + leftSubtreeLength + 1, ePre, rootNodeIndex + 1, eIn);
+    private TreeNode construct(int[] preorder, int[] inorder, Map<Integer, Integer> inOrderMap, int sPre, int ePre, int sIn, int eIn) {
+        if (sIn > eIn || sPre > ePre) return null;
+        int rootNodeValue = preorder[sPre];
+        int rootNodeIndex = inOrderMap.get(rootNodeValue);
+        int lstLength = rootNodeIndex - sIn;
+        TreeNode root = new TreeNode(rootNodeValue);
+        root.left = construct(preorder, inorder, inOrderMap, sPre + 1, sPre + lstLength, sIn, rootNodeIndex - 1);
+        root.right = construct(preorder, inorder, inOrderMap, sPre + lstLength + 1, ePre, rootNodeIndex + 1, eIn);
         return root;
     }
 }
