@@ -3,52 +3,49 @@ class Solution {
         int row;
         int col;
         int level;
-        public Pair(int level, int row, int col) {
+        public Pair(int row, int col, int level) {
             this.row = row;
             this.col = col;
             this.level = level;
         }
     }
-    int[] x = {0,0,-1,1};
-    int[] y = {-1,1,0,0};
     public int orangesRotting(int[][] grid) {
-        int row = grid.length;
-        int col = grid[0].length;
+        int[] x = {-1, 1, 0, 0};
+        int[] y = {0, 0, -1, 1};
         Queue<Pair> queue = new LinkedList<>();
-        for (int r = 0; r < row; r++) {
-            for (int c = 0; c < col; c++) {
-                if (grid[r][c] == 2) {
-                    queue.add(new Pair(0, r, c));
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+                if (grid[row][col] == 2) {
+                    queue.add(new Pair(row, col, 0));
                 }
             }
         }
+        int queueSize = 0;
         int answer = 0;
         while (!queue.isEmpty()) {
-            Pair peekPair = queue.poll();
-            answer = Math.max(answer, peekPair.level);
-            for (int i = 0; i < x.length; i++) {
-                int r1 = x[i] + peekPair.row;
-                int c1 = y[i] + peekPair.col;
-                if (isValidRow(r1, c1, row, col) && grid[r1][c1] == 1) {
-                    grid[r1][c1] = 2;
-                    queue.add(new Pair(peekPair.level + 1, r1, c1));
+            queueSize = queue.size();
+            for (int i = 0; i < queueSize; i++) {
+                Pair peek = queue.poll();
+                answer = peek.level;
+                for (int j = 0; j < x.length; j++) {
+                    int r = peek.row + x[j];
+                    int c = peek.col + y[j];
+                    if (isValid(r, c, grid.length, grid[0].length) && grid[r][c] == 1) {
+                        grid[r][c] = 2;
+                        queue.add(new Pair(r, c, peek.level + 1));
+                    }
                 }
             }
         }
-        for (int r = 0; r < row; r++) {
-            for (int c = 0; c < col; c++) {
-                if (grid[r][c] == 1) {
-                    return -1;
-                }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 1) return -1;
             }
         }
         return answer;
     }
-    private boolean isValidRow(int r, int c, int row, int col) {
-        if (r >= 0 && r < row && c >= 0 && c < col) {
-            return true;
-        }
-        return false;
+    private boolean isValid(int r, int c, int row, int col) {
+        
+        return r >= 0 && r < row && c >= 0 && c < col; 
     }
 }
-
