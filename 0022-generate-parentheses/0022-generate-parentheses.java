@@ -1,19 +1,22 @@
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> listAnswer = new ArrayList<>();
-        generate(listAnswer, n, "(", 1, 0);
+        StringBuilder sb = new StringBuilder("(");
+        find(n, listAnswer, 1, 0, sb);
         return listAnswer;
     }
-    private void generate (List<String> listAnswer, int n, String subAnswer, int open, int close) {
-        if (subAnswer.length() == n * 2) {
-            listAnswer.add(subAnswer);
+    private void find (int n, List<String> listAnswer, int open, int close, StringBuilder sb) {
+        if (sb.length() == 2 * n) {
+            listAnswer.add(sb.toString());
             return;
         }
-        
-        if (open < n)
-            generate(listAnswer, n, subAnswer + "(", open + 1, close);
-            
-        if (close < open)
-            generate(listAnswer, n, subAnswer + ")", open, close + 1);
+        if (open < n) {
+            find (n, listAnswer, open + 1, close, sb.append("("));
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if (close < open) {
+            find (n, listAnswer, open, close + 1, sb.append(")"));  
+            sb.deleteCharAt(sb.length() - 1);
+        }
     }
 }
