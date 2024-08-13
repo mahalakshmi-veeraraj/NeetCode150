@@ -2,26 +2,33 @@ class Solution {
     public void setZeroes(int[][] matrix) {
         int totalRow = matrix.length;
         int totalColumn = matrix[0].length;
-        int[] rowArr = new int[totalRow];
-        int[] colArr = new int[totalColumn];
+        boolean blnRowHasZero = false;
+        boolean blnColumnHasZero = false;
         for (int row = 0; row < totalRow; row++) {
             for (int col = 0; col < totalColumn; col++) {
                 if (matrix[row][col] == 0) {
-                    rowArr[row] = 1;
-                    colArr[col] = 1;
+                    if (row == 0) blnRowHasZero = true;
+                    if (col == 0) blnColumnHasZero = true;
+                    matrix[row][0] = 0;
+                    matrix[0][col] = 0;
                 }
             }
         }
-        for (int i = 0; i < rowArr.length; i++) {
-            if (rowArr[i] == 0) continue;
-            for (int col = 0; col < totalColumn; col++) {
-                matrix[i][col] = 0;
+        for (int row = 1; row < totalRow; row++) {
+            for (int col = 1; col < totalColumn; col++) {
+                if (matrix[row][0] == 0 || matrix[0][col] == 0) {
+                    matrix[row][col] = 0;
+                }
             }
         }
-        for (int i = 0; i < colArr.length; i++) {
-            if (colArr[i] == 0) continue;
+        if (blnRowHasZero) {
+            for (int col = 0; col < totalColumn; col++) {
+                matrix[0][col] = 0;
+            }
+        }
+        if (blnColumnHasZero) {
             for (int row = 0; row < totalRow; row++) {
-                matrix[row][i] = 0;
+                matrix[row][0] = 0;
             }
         }
     }
