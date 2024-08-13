@@ -25,47 +25,38 @@ class Solution {
         }
     }
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        Map<Integer, Map<Integer, Queue<Integer>>> treeMap = new TreeMap<>();
+        Map<Integer, Map<Integer, List<Integer>>> treeMap = new TreeMap<>();
         Queue<Pair> queue = new LinkedList<>();
         queue.add(new Pair(root, 0, 0));
         while (!queue.isEmpty()) {
-            Pair peekPair = queue.poll();
-            if (!treeMap.containsKey(peekPair.level)) {
-                Queue<Integer> pq = new PriorityQueue<>();
-                pq.add(peekPair.node.val);
-                TreeMap<Integer, Queue<Integer>> m = new TreeMap<>();
-                m.put(peekPair.rowNumber, pq);
-                treeMap.put(peekPair.level, m);
-            }
-            else {
-                Map<Integer, Queue<Integer>> m = treeMap.get(peekPair.level);
-                if (!m.containsKey(peekPair.rowNumber)) {
-                    Queue<Integer> pq = new PriorityQueue<>();
-                    pq.add(peekPair.node.val);
-                    m.put(peekPair.rowNumber, pq);
+                Pair peek = queue.poll();
+                TreeNode peekNode = peek.node;
+                if (treeMap.containsKey(peek.level)) {
+                    Map<Integer, List<Integer>> map = treeMap.get(peek.level);
+                    List<Integer> list = null;
+                    if (map.containsKey(peek.rowNumber)) {
+                        list = map.get(peek.rowNumber);
+                    }else list = new ArrayList<>();
+                    list.add(peekNode.val);
+                    map.put(peek.rowNumber, list);
                 }
                 else {
-                    Queue<Integer> pq = m.get(peekPair.rowNumber);
-                    pq.add(peekPair.node.val);
+                    Map<Integer, List<Integer>> map = new TreeMap<>();
+                    List<Integer> list = new ArrayList<>();
+                    list.add(peekNode.val);
+                    map.put(peek.rowNumber, list);
+                    treeMap.put(peek.level, map);
                 }
-            }
-            if (peekPair.node.left != null) {
-                queue.add(new Pair(peekPair.node.left, peekPair.level - 1, peekPair.rowNumber + 1));
-            }
-            if (peekPair.node.right != null) {
-                queue.add(new Pair(peekPair.node.right, peekPair.level + 1, peekPair.rowNumber + 1));
-            }
+                if (peekNode.left != null) queue.add(new Pair(peekNode.left, peek.level - 1, peek.rowNumber + 1));
+                if (peekNode.right != null) queue.add(new Pair(peekNode.right, peek.level + 1, peek.rowNumber + 1));
         }
         List<List<Integer>> listAnswer = new ArrayList<>();
-        for (Map.Entry<Integer, Map<Integer, Queue<Integer>>> entry : treeMap.entrySet()) {
+        for (Map.Entry<Integer, Map<Integer,List<Integer>>> entry : treeMap.entrySet()) {
             List<Integer> listSubAnswer = new ArrayList<>();
-            for (Map.Entry<Integer, Queue<Integer>> e : entry.getValue().entrySet()) {
-                Queue<Integer> q = e.getValue();
-                while (!q.isEmpty()) {
-                    listSubAnswer.add(q.poll());
-                }
+            for (Map.Entry<Integer, List<Integer>> subEntry : entry.getValue().entrySet()) {
+                Collections.sort(subEntry.getValue());
+                listSubAnswer.addAll(subEntry.getValue());
             }
-            
             listAnswer.add(listSubAnswer);
         }
         return listAnswer;
