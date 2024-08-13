@@ -1,29 +1,28 @@
 class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
+        Set<List<Integer>> answerSet = new HashSet<>();
+        find(answerSet, new ArrayList<>(), nums, 0);
         List<List<Integer>> listAnswer = new ArrayList<>();
-        find(listAnswer, nums, 0, new ArrayList<>());
+        for (List<Integer> key : answerSet) listAnswer.add(key);
         return listAnswer;
     }
-    private void find (List<List<Integer>> listAnswer, int[] nums, int index, List<Integer> listSubAnswer) {
+    private void find (Set<List<Integer>> answerSet, List<Integer> listSubAnswer, int[] nums, int index) {
         if (index >= nums.length) {
-            listAnswer.add(new ArrayList<>(listSubAnswer));
+            answerSet.add(new ArrayList<>(listSubAnswer));
             return;
         }
         
-        // include element.
+        // Include element.
         listSubAnswer.add(nums[index]);
-        find(listAnswer, nums, index + 1, listSubAnswer);
+        find(answerSet, listSubAnswer, nums, index + 1);
         
-        // logic to control excluding the already included element.
-        int nextIndex = index;
-        for (int i = index + 1; i < nums.length; i++) {
-            if (nums[i] == nums[index]) {
-                nextIndex = i;
-            }else break;
-        }
-        // exclude element.
+        // Exclude element.
         listSubAnswer.remove(listSubAnswer.size() - 1);
-        find(listAnswer, nums, nextIndex + 1, listSubAnswer);
+        int i = index + 1;
+        while (i < nums.length && nums[i] == nums[index]) {
+            i++;
+        }
+        find(answerSet, listSubAnswer, nums, i);
     }
 }
