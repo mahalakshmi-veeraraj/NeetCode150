@@ -2,26 +2,22 @@ class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
         int[] answerArray = new int[2];
+        answerArray[0] = 0;
+        answerArray[1] = 0;
         for (int i = 0; i < n; i++) {
-            expansionApproach(answerArray, i, i, s);
-            if (i != n - 1)
-                expansionApproach(answerArray, i, i + 1, s);
+            find(answerArray, s, i, i + 1);
+            find(answerArray, s, i, i);
         }
-        
-        StringBuilder answer = new StringBuilder();
-        for (int i = answerArray[0]; i <= answerArray[1]; i++) {
-            answer.append(s.charAt(i));
-        }
-        return answer.toString();
+        return s.substring(answerArray[0], answerArray[1] + 1);
     }
-    private void expansionApproach (int[] answerArray, int center1, int center2, String s) {
-        while (center1 >= 0 && center2 < s.length() && s.charAt(center1) == s.charAt(center2)) {
-            if (center2 - center1 > answerArray[1] - answerArray[0]) {
-                answerArray[0] = center1;
-                answerArray[1] = center2;
+    private void find (int[] answerArray, String s, int c1, int c2) {
+        while (c1 >= 0 && c2 < s.length() && s.charAt(c1) == s.charAt(c2)) {
+            if ( (c2 - c1 + 1) > (answerArray[1] - answerArray[0] + 1) ) {
+                answerArray[0] = c1;
+                answerArray[1] = c2;
             }
-            center1--;
-            center2++;
+            c1--;
+            c2++;
         }
     }
 }
