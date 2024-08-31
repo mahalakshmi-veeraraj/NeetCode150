@@ -1,7 +1,6 @@
 class Solution {
     public int search(int[] nums, int target) {
         int minElementIndex = findMin(nums);
-        System.out.println(minElementIndex);
         int answer = binarySearch(nums, 0, minElementIndex - 1, target);
         if (answer == -1) {
             answer = binarySearch(nums, minElementIndex, nums.length - 1, target);
@@ -14,7 +13,7 @@ class Solution {
         int middle = 0;
         while (low < high) {
             middle = (low + high) / 2;
-            if (nums[middle] <= nums[high]) high = middle;
+            if (nums[middle] < nums[high]) high = middle;
             else low = middle + 1;
         }
         return low;
@@ -24,9 +23,9 @@ class Solution {
         while (low <= high) {
             middle = (low + high) / 2;
             if (nums[middle] == target) return middle;
-            else if (nums[middle] > target) high = middle - 1;
-            else low = middle + 1;
-        } 
+            else if (nums[middle] < target) low = middle + 1;
+            else high = middle - 1;
+        }
         return -1;
     }
 }
