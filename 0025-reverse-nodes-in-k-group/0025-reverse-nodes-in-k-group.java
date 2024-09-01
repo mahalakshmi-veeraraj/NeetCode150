@@ -10,26 +10,37 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode answerNode = new ListNode(-1);
-        ListNode answerNodeHead = answerNode;
         ListNode current = head;
+        ListNode previous = null;
+        ListNode answerNode = null;
         while (current != null) {
             ListNode kthNode = findKthNode(current, k);
             if (kthNode == null) {
-                answerNode.next = current;
+                previous.next = current;
                 break;
             }
-            ListNode future = kthNode.next;
+            ListNode kthNodeNext = kthNode.next;
             kthNode.next = null;
-            ListNode reversedKthNode = reverse(current);
-            answerNode.next = reversedKthNode;
-            answerNode = current;
-            current = future;
+            ListNode reversedNode = reverse(current);
+            if (answerNode == null) answerNode = reversedNode;
+            if (previous != null) previous.next = kthNode;
+            previous = current;
+            current = kthNodeNext;
         }
-        return answerNodeHead.next;
+        return answerNode;
     }
-    private ListNode reverse (ListNode head) {
-        ListNode current = head;
+    private ListNode findKthNode (ListNode node, int k) {
+        ListNode current = node;
+        int count = 1;
+        while (count < k) {
+            if (current == null) break;
+            current = current.next;
+            count++;
+        }
+        return current;
+    }
+    private ListNode reverse (ListNode node) {
+        ListNode current = node;
         ListNode previous = null;
         ListNode future = null;
         while (current != null) {
@@ -39,14 +50,5 @@ class Solution {
             current = future;
         }
         return previous;
-    }
-    private ListNode findKthNode (ListNode node, int k) {
-        int count = 0;
-        while (node != null) {
-            count++;
-            if (count == k) return node;
-            node = node.next;
-        }
-        return null;
     }
 }
