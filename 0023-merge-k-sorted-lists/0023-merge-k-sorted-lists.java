@@ -17,35 +17,35 @@ class Solution {
     private ListNode mergeSort(ListNode[] lists, int start, int end) {
         if (start == end) return lists[start];
         
-        int mid = (start + end) / 2;
-        ListNode nodeA =  mergeSort(lists, start, mid);
-        ListNode nodeB = mergeSort(lists, mid + 1, end);
+        int middle = (start + end) / 2;
+        ListNode nodeA = mergeSort(lists, start, middle);
+        ListNode nodeB = mergeSort(lists, middle + 1, end);
         return merge(nodeA, nodeB);
     }
     private ListNode merge(ListNode nodeA, ListNode nodeB) {
-        ListNode dummy = new ListNode(-1);
-        ListNode dummyHead = dummy;
+        ListNode dummyNode = new ListNode(-1);
+        ListNode dummyNodeHead = dummyNode;
         while (nodeA != null && nodeB != null) {
-            if (nodeA.val < nodeB.val) {
-                dummy.next = nodeA;
+            if (nodeA.val <= nodeB.val) {
+                dummyNode.next = nodeA;
                 nodeA = nodeA.next;
             }
             else {
-                dummy.next = nodeB;
+                dummyNode.next = nodeB;
                 nodeB = nodeB.next;
             }
-            dummy = dummy.next;
+            dummyNode = dummyNode.next;
         }
         while (nodeA != null) {
-            dummy.next = nodeA;
+            dummyNode.next = nodeA;
             nodeA = nodeA.next;
-            dummy = dummy.next;
+            dummyNode = dummyNode.next;
         }
         while (nodeB != null) {
-            dummy.next = nodeB;
+            dummyNode.next = nodeB;
             nodeB = nodeB.next;
-            dummy = dummy.next;
+            dummyNode = dummyNode.next;
         }
-        return dummyHead.next;
+        return dummyNodeHead.next;
     }
 }
