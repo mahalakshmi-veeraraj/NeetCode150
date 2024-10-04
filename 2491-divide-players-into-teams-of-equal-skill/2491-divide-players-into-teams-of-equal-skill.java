@@ -9,7 +9,6 @@ class Solution {
             sum += skill[i];
             hashMap.put(skill[i], hashMap.getOrDefault(skill[i],0)+1);
         }
-        if (sum % nDivBy2 != 0) return -1;
         int k = sum / nDivBy2;
         for (int i = 0; i < n; i++) {
             if (!hashMap.containsKey(skill[i])) continue;
