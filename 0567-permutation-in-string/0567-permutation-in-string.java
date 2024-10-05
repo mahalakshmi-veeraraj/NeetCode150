@@ -2,33 +2,37 @@ class Solution {
     public boolean checkInclusion(String s1, String s2) {
         if (s1.length() > s2.length()) return false;
         
-        Map<Character, Integer> hashMap_s1 = new HashMap<>();
+        int[] s1_Frequency_Array =  new int[26];
         for (int i = 0; i < s1.length(); i++) {
-            hashMap_s1.put(s1.charAt(i), hashMap_s1.getOrDefault(s1.charAt(i),0) + 1);
+            s1_Frequency_Array[s1.charAt(i) - 97]++;
         }
-        
-        Map<Character, Integer> hashMap_s2 = new HashMap<>();
         int windowSize = s1.length();
-        int totalWindows = s2.length() - windowSize;
+        int totalWindow = s2.length() - windowSize;
+        int[] s2_Frequency_Array =  new int[26];
         for (int i = 0; i < windowSize; i++) {
-            hashMap_s2.put(s2.charAt(i), hashMap_s2.getOrDefault(s2.charAt(i),0) + 1);
+            s2_Frequency_Array[s2.charAt(i) - 97]++;
         }
-        if (checkMap(hashMap_s1, hashMap_s2)) return true;
-        char inElement = '\0';
-        char outElement = '\0';
-        for (int i = 1; i <= totalWindows; i++) {
-            inElement = s2.charAt(i + windowSize - 1);
-            outElement = s2.charAt(i - 1);
-            hashMap_s2.put(inElement, hashMap_s2.getOrDefault(inElement, 0) + 1);
-            hashMap_s2.put(outElement, hashMap_s2.get(outElement) - 1);
-            if (checkMap(hashMap_s1, hashMap_s2)) return true;
-        } 
+        if (check(s1_Frequency_Array, s2_Frequency_Array)) {
+            return true;
+        }
+        int inElement = 0;
+        int outElement = 0;
+        for (int i = 1; i <= totalWindow; i++) {
+            inElement = s2.charAt(i + windowSize - 1) - 97;
+            outElement = s2.charAt(i - 1) - 97;
+            s2_Frequency_Array[inElement]++;
+            s2_Frequency_Array[outElement]--;
+            if (check(s1_Frequency_Array, s2_Frequency_Array)) {
+               return true;
+            }   
+        }
         return false;
     }
-    private boolean checkMap (Map<Character, Integer> hashMap_s1, Map<Character, Integer> hashMap_s2) {
-        for (Map.Entry<Character, Integer> entry : hashMap_s1.entrySet()) {
-            if (!hashMap_s2.containsKey(entry.getKey())) return false;
-            if (hashMap_s2.get(entry.getKey()) < entry.getValue()) return false;
+    private boolean check(int[] s1_Frequency_Array, int[] s2_Frequency_Array) {
+        for (int i = 0; i < s1_Frequency_Array.length; i++) {
+            if (s2_Frequency_Array[i] < s1_Frequency_Array[i]) {
+                return false;
+            }
         }
         return true;
     }
