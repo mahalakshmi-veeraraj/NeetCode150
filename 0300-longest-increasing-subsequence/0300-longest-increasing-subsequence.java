@@ -2,11 +2,6 @@ class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         int[][] dp = new int[n][n + 1];
-        // for (int i = 0; i < dp.length; i++) {
-        //     for (int j = 0; j < dp[i].length; j++) {
-        //         dp[i][j] = -1;
-        //     }
-        // }
         find (nums, dp, 0, -1);
         int answer = Integer.MIN_VALUE;
         for (int i = 0; i < dp.length; i++) {
