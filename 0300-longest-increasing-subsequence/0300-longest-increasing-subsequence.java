@@ -1,28 +1,36 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int[] dpArray = new int[n];
-        for (int i = 0; i < n; i++) {
-            dpArray[i] = 1;
-        }
-        int i = 0; 
-        int j = 1;
-        while (j < n) {
-            while (i < j) {
-                if (nums[j] > nums[i]) {
-                    if (dpArray[i] + 1 > dpArray[j]) {
-                        dpArray[j] = dpArray[i] + 1;
-                    }
-                }
-                i++;
+        int[][] dp = new int[n][n + 1];
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[i].length; j++) {
+                dp[i][j] = -1;
             }
-            i = 0;
-            j++;
         }
-        int answer = 0;
-        for (i = 0; i < n; i++) {
-            answer = Math.max(answer, dpArray[i]);
+        find (nums, dp, 0, -1);
+        int answer = Integer.MIN_VALUE;
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[i].length; j++) {
+                answer = Math.max(answer, dp[i][j]);
+            }
         }
         return answer;
+    }
+    private int find (int[] nums, int[][] dp, int index, int previousIndex) {
+        if (index >= nums.length) return 0;
+        
+        if (dp[index][previousIndex + 1] != -1) return dp[index][previousIndex + 1];
+        
+        // Include the element.
+        int include = 0;
+        if (previousIndex == -1 || nums[index] > nums[previousIndex]) 
+            include = find (nums, dp, index + 1, index) + 1;
+        
+        // Exclude the element.
+        int exclude = find (nums, dp, index + 1, previousIndex);
+        
+        dp[index][previousIndex + 1] = Math.max(include, exclude);
+        
+        return dp[index][previousIndex + 1];
     }
 }
