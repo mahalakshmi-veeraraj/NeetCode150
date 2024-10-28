@@ -14,7 +14,25 @@ class Solution {
                 dp[i][j] = -1;
             }
         }
-        return find (nums, target, 0, dp);
+        // return find (nums, target, 0, dp);
+        // Updating the base case.
+        for (int index = 0; index < n; index++) dp[index][0] = 1;
+        if (nums[0] <= target)
+            dp[0][nums[0]] = 1;
+    
+        for (int index = 1; index < n; index++) {
+            for (int t = 1; t <= target; t++) {
+                // exclude the element.
+                int exclude = dp[index - 1][t];
+                
+                // include the element.
+                int include = 0;
+                if (nums[index] <= t)
+                    include = dp[index - 1][t - nums[index]];
+                dp[index][t] = include == 1 || exclude == 1 ? 1 : 0;
+            }
+        }
+        return dp[n - 1][target] == 1;
     }
     private boolean find (int[] nums, int target, int index, int[][] dp) {
         if (target == 0) return true;
