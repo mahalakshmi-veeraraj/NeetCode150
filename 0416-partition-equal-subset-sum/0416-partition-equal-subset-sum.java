@@ -16,9 +16,9 @@ class Solution {
         }
         // return find (nums, target, 0, dp);
         // Updating the base case.
-        for (int index = 0; index < n; index++) dp[index][0] = 1;
+        for (int index = 0; index < n; index++) dp[index][0] = 1; // A sum of 0 can always be achieved.
         if (nums[0] <= target)
-            dp[0][nums[0]] = 1;
+            dp[0][nums[0]] = 1; // Inititalizes for the first number.
     
         for (int index = 1; index < n; index++) {
             for (int t = 1; t <= target; t++) {
@@ -32,7 +32,10 @@ class Solution {
                 dp[index][t] = include == 1 || exclude == 1 ? 1 : 0;
             }
         }
-        return dp[n - 1][target] == 1;
+        for (int i = 0; i < n; i++) {
+            if (dp[i][target] == 1) return true;
+        }
+        return false;
     }
     private boolean find (int[] nums, int target, int index, int[][] dp) {
         if (target == 0) return true;
