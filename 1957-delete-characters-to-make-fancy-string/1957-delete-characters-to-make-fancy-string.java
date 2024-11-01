@@ -1,23 +1,21 @@
 class Solution {
     public String makeFancyString(String s) {
-        Stack<Character> stack = new Stack<>();
         int n = s.length();
         char currentChar = '\0';
+        char previousChar = '\0';
         int frequencyCount = 0;
+        StringBuilder answerStrBuilder = new StringBuilder();
         for (int i = 0; i < n; i++) {
             currentChar = s.charAt(i);
-            if (stack.empty() || stack.peek() == currentChar) {
+            if (i == 0 || previousChar == currentChar) {
                 frequencyCount++;
             }
             else {
                 frequencyCount = 1;
             }
-            if (frequencyCount < 3) stack.add(currentChar);
+            if (frequencyCount < 3) answerStrBuilder.append(currentChar);
+            previousChar = currentChar;
         }
-        StringBuilder answerStrBuilder = new StringBuilder();
-        while (!stack.empty()) {
-            answerStrBuilder.append(stack.pop());
-        }
-        return answerStrBuilder.reverse().toString();
+        return answerStrBuilder.toString();
     }
 }
