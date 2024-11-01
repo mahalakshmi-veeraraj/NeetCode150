@@ -1,24 +1,29 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        if (amount <= 0) return amount;
-        
-        int[] dp = new int[amount + 1];
+        int n = coins.length;
+        long[][] dp = new long[n][amount + 1];
         for (int i = 0; i < dp.length; i++) {
-            dp[i] = -1;
+            for (int j = 0; j < dp[i].length; j++) {
+                dp[i][j] = -1;
+            }
         }
-        return find(dp, coins, amount) == 1000000000 ? -1 : dp[amount];   
+        long answer = find (coins, n - 1, amount, dp);
+        return (int) (answer == Integer.MAX_VALUE ? -1l : answer);
     }
-    
-    private int find (int[] dp, int[] coins, int amount) {
-        if (amount <= 0) return 0;
-        if (dp[amount] != -1) return dp[amount];
+    private long find (int[] coins, int index, int amount, long[][] dp) {
+        if (amount == 0) return 0;
+        if (index < 0) return Integer.MAX_VALUE;
+        if (dp[index][amount] != -1) return dp[index][amount];
         
-        int minNumberOfCoinsNeededToMakeAmount = 1000000000;
-        for (int i = 0; i < coins.length; i++) {
-            if (coins[i] > amount) continue;
-            minNumberOfCoinsNeededToMakeAmount = Math.min(minNumberOfCoinsNeededToMakeAmount, find(dp, coins, amount - coins[i]) + 1);    
-        }
-        dp[amount] = minNumberOfCoinsNeededToMakeAmount;
-        return dp[amount];
+        // take the coin.
+        long take = Integer.MAX_VALUE; 
+        if (coins[index] <= amount)
+            take = 1 + find (coins, index, amount - coins[index], dp);
+            
+        // not take the coin.
+        long notTake = find (coins, index - 1, amount, dp);
+        
+        dp[index][amount] = Math.min(take, notTake);    
+        return dp[index][amount];
     }
 }
