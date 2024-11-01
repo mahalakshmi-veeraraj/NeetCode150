@@ -17,7 +17,7 @@ class Solution {
         if (candidates[index] <= target) {
             listSubAnswer.add(candidates[index]);
             find (listAnswer, listSubAnswer, index, target - candidates[index], candidates);
-            take = 1;
+            take = 1; //marking helps to identify whether the element was taken earlier or not in the future.
         }
         
         // not take element.
