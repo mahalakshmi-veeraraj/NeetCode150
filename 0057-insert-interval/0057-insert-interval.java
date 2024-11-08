@@ -1,5 +1,6 @@
 class Solution {
     public int[][] insert(int[][] intervals, int[] newInterval) {
+        // listInterval preparing part.
         List<List<Integer>> listInterval = new ArrayList<>();
         for (int i = 0; i < intervals.length; i++) {
             List<Integer> listSubInterval = new ArrayList<>();
@@ -11,15 +12,16 @@ class Solution {
         listSubInterval.add(newInterval[0]);
         listSubInterval.add(newInterval[1]);
         listInterval.add(listSubInterval);
-        Collections.sort(listInterval, (a, b) -> a.get(0) - b.get(0));
+        Collections.sort(listInterval, (a, b) -> Integer.compare(a.get(0), b.get(0)));
         
+        // listAnswer preparing part.
         List<List<Integer>> listAnswer = new ArrayList<>();
         int startInterval = listInterval.get(0).get(0);
         int endInterval = listInterval.get(0).get(1);
-        for (int i = 1; i < listInterval.size(); i++) {
+        for (int i = 0; i < listInterval.size(); i++) {
             if (listInterval.get(i).get(0) <= endInterval) {
-                startInterval = Math.min(listInterval.get(i).get(0), startInterval);
-                endInterval = Math.max(listInterval.get(i).get(1), endInterval);
+                startInterval = Math.min(startInterval, listInterval.get(i).get(0));
+                endInterval = Math.max(endInterval, listInterval.get(i).get(1));
             }
             else {
                 List<Integer> listSubAnswer = new ArrayList<>();
@@ -34,6 +36,8 @@ class Solution {
         listSubAnswer.add(startInterval);
         listSubAnswer.add(endInterval);
         listAnswer.add(listSubAnswer);
+        
+        // answerArray preparing part.
         int[][] answerArray = new int[listAnswer.size()][2];
         for (int i = 0; i < listAnswer.size(); i++) {
             answerArray[i][0] = listAnswer.get(i).get(0);
@@ -42,4 +46,3 @@ class Solution {
         return answerArray;
     }
 }
-
