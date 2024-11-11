@@ -23,7 +23,7 @@ class Solution {
 
             // If the difference is prime or zero, then nums[i] can be made
             // equal to currValue.
-            if (sieve[difference] == true || difference == 0) {
+            if (sieve[difference] == true) {
                 i++;
                 currValue++;
             } else {
